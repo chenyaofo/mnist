@@ -1,0 +1,36 @@
+dataset {
+  name = "mnist"
+  n_classes = 10
+  root = ".data"
+  mean = [0.1307]
+  std = [0.3081]
+}
+
+optimizer {
+  learning_rate = 0.1
+  momentum = 0.9
+  dampening = 0
+  weight_decay = 0.0001
+  nesterov = true
+}
+
+strategy {
+  epoch = 30
+  train {
+    batch_size = 256
+  }
+  val {
+    batch_size = 256
+  }
+}
+
+scheduler {
+  type = "MultiStepLR"
+  milestones = [10,20]
+  gamma = 0.1
+}
+
+machine {
+  n_loader_processes = 2
+  parallel = false
+}
