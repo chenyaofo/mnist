@@ -1,6 +1,6 @@
 # MNIST example
 
-It is one of the [flame examples]().
+It is one of the [flame examples](https://github.com/chenyaofo/flame/tree/master/examples).
 
 ## run
 
