@@ -31,7 +31,7 @@ train_loader = torch.utils.data.DataLoader(
     shuffle=True,
     num_workers=flame.hocon.get_int("machine.n_loader_processes"),
 )
-ctx.train_phase = Phase("traning", True, train_loader)
+ctx.train_phase = Phase("training", True, train_loader)
 
 val_dataset = datasets.MNIST(
     root=flame.hocon.get_string("dataset.root"),
