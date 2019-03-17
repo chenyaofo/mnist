@@ -2,11 +2,13 @@ import flame
 from flame.engine import Engine, Event
 from flame.metrics import AverageMetric, AccuracyMetric, TimeMetric
 from flame.handlers import TimeEstimater
+from flame.utils import create_code_snapshot
 
 from core import Context
 from material import ctx
 
 if __name__ == '__main__':
+    create_code_snapshot()
     engine = Engine(ctx)
 
     AccuracyMetric("accuracy", (1, 5), context_map=lambda ctx: (ctx.targets, ctx.outputs)).attach(engine)
@@ -38,6 +40,14 @@ if __name__ == '__main__':
         ctx.datas, ctx.targets = datas.to(ctx.device), targets.to(ctx.device)
         ctx.outputs = ctx.net(ctx.datas)
         ctx.loss = ctx.criterion(ctx.outputs, targets)
+
+
+    @engine.on(Event.PHASE_STARTED)
+    def set_net_training_state(engine: Engine, ctx: Context):
+        if ctx.is_in_phase(ctx.train_phase):
+            ctx.net.train()
+        else:
+            ctx.net.eval()
 
 
     @engine.on(Event.PHASE_COMPLETED)
