@@ -33,6 +33,20 @@ if __name__ == '__main__':
         ctx.loss.backward()
         ctx.optimizer.step()
 
+    @engine.iter_func(ctx.train_phase,debug=True)
+    def debug_train(engine: Engine, ctx: Context):
+        datas, targets = ctx.inputs
+        ctx.datas, ctx.targets = datas.to(ctx.device), targets.to(ctx.device)
+        ctx.timer.mark("to device")
+        ctx.outputs = ctx.net(ctx.datas)
+        ctx.timer.mark("forward")
+        ctx.loss = ctx.criterion(ctx.outputs, targets)
+        ctx.timer.mark("criterion")
+        ctx.optimizer.zero_grad()
+        ctx.loss.backward()
+        ctx.timer.mark("backward")
+        ctx.optimizer.step()
+        ctx.timer.mark("step")
 
     @engine.iter_func(ctx.validation_phase)
     def validation(engine: Engine, ctx: Context):
