@@ -28,7 +28,7 @@ if __name__ == '__main__':
         datas, targets = ctx.inputs
         ctx.datas, ctx.targets = datas.to(ctx.device), targets.to(ctx.device)
         ctx.outputs = ctx.net(ctx.datas)
-        ctx.loss = ctx.criterion(ctx.outputs, targets)
+        ctx.loss = ctx.criterion(ctx.outputs, ctx.targets)
         ctx.optimizer.zero_grad()
         ctx.loss.backward()
         ctx.optimizer.step()
@@ -40,7 +40,7 @@ if __name__ == '__main__':
         ctx.timer.mark("to device")
         ctx.outputs = ctx.net(ctx.datas)
         ctx.timer.mark("forward")
-        ctx.loss = ctx.criterion(ctx.outputs, targets)
+        ctx.loss = ctx.criterion(ctx.outputs, ctx.targets)
         ctx.timer.mark("criterion")
         ctx.optimizer.zero_grad()
         ctx.loss.backward()
@@ -53,7 +53,7 @@ if __name__ == '__main__':
         datas, targets = ctx.inputs
         ctx.datas, ctx.targets = datas.to(ctx.device), targets.to(ctx.device)
         ctx.outputs = ctx.net(ctx.datas)
-        ctx.loss = ctx.criterion(ctx.outputs, targets)
+        ctx.loss = ctx.criterion(ctx.outputs, ctx.targets)
 
 
     @engine.on(Event.PHASE_STARTED)
